@@ -575,4 +575,8 @@ buffer = []
 
 for line in ( l.rstrip("\n") for l in sys.stdin ):
     unescaped = line.replace(u"\u0085", "\n")
-    print(f(unescaped))
+    try:
+        result = f(unescaped)
+        print(result)
+    except:
+        print("Syntax Error" + u"\u0004")

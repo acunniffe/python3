@@ -3,6 +3,8 @@ package com.opticdev.parsers.python3.pythonbridge
 import org.scalatest.FunSpec
 import play.api.libs.json.Json
 
+import scala.util.Try
+
 class PythonParserInterfaceSpec extends FunSpec {
 
   it("works and closes when done") {
@@ -29,6 +31,15 @@ class PythonParserInterfaceSpec extends FunSpec {
     println(parsed1)
     ppI.exit
   }
+
+  it("works with invalid code / doesn't close buffer") {
+    val ppI = new PythonParserInstance
+    val parsed0 = ppI.parseCode("hello = =")
+    val parsed1 = ppI.parseCode("hello = world")
+    assert(Try(Json.parse(parsed1)).isSuccess)
+    ppI.exit
+  }
+
 
   it("keeps buffers from leaking memory") {
     val ppI = new PythonParserInstance
